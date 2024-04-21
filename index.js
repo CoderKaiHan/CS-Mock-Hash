@@ -1,5 +1,6 @@
 // This allows us to use the bcrypt algorithm in our Node.js project
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const rds = 12;
 
 // This allows us to read from the terminal
 const readlineSync = require('readline-sync')
@@ -14,20 +15,22 @@ let globalStore = {}
 */
 
 // function for checking a password
-checkPassword = async (username, plaintextPassword) => {
+const checkPassword = async (username, plaintextPassword) => {
     // TODO: Make sure to delete this console.log once you're done implementing the function!
-    console.log('\n Uh-oh, checkPassword is not yet implemented. 😢')
+
     // Ensure global store contains the user 
     // (this is a quick way to check if an object contains a key)
     if (globalStore[username]) {
         // TODO: Use bcrypt's compare methof to compare a plaintext password to a password hash
-
+        const result = await bcrypt.compare(plaintextPassword, globalStore[username]);
         // TODO: The result variable is a boolean. True means the user was valid. Take action accordingly.
         if (result) {
             // TODO: Display message for valid credentials
+            console.log('\n✅ Valid credentials\n');
         }
         else {
             // TODO: Display message for invalid credentials
+            console.log('\n❌ Invalid credentials\n');
         }
     }
     else {
@@ -36,15 +39,20 @@ checkPassword = async (username, plaintextPassword) => {
     }
 }
 
-hashPassword = async (username, password) => {
+const hashPassword = async (username, password) => {
     // TODO: Make sure to delete this console.log once you're done implementing the function!
-    console.log('\nUh-oh, hashPassword is not yet implemented. 😢')
 
     // TODO: Make the password hash using bcrypt
-
     // TODO: Add the user and password hash to the global store object
 
     // TODO: Print a status update including the username and password hash
+    try{
+        const hashedPassword = await bcrypt.hash(password, rds);
+        globalStore[username] = hashedPassword;
+        console.log(`\n✅ User ${username} created with hashed password: ${hashedPassword}\n`);
+    }catch (err) {
+        console.log('Error hashing password:', err);
+    }
 }
 
 

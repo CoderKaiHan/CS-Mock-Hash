@@ -110,6 +110,17 @@ viewStore = () => {
     console.log('\n==================================\n')
 }
 
+
+secret = async () => {
+    let secretMessage = readlineSync.question('Please whisper sweet words: ', {
+        hideEchoBack: true
+    });
+
+    console.log(`Your secret is ${secretMessage}`);
+};
+
+
+
 // Program loop
 programLoop = async () => {
     while (true) {
@@ -130,7 +141,11 @@ programLoop = async () => {
                 console.log('\tcreate: add a new user')
                 console.log('\tlogin: login to a specific user')
                 console.log('\thelp: show available commands')
+                console.log('\tsecret: tell me your secrets!')
                 console.log('\texit: quit this program\n\n')
+                break
+            case 'secret':
+                await secret()
                 break
             case 'exit':
             case 'quit':
